@@ -12,12 +12,15 @@
   <script>
     console.log("DeepLearnJS: hello");
     console.log("DeepLearnJS: " + navigator.userAgent);
-    try { gl = canvas.getContext("webgl"); }
-    catch (x) { gl = null; }
+    var canvas = document.createElement('canvas');
+    var gl;
 
-    if (gl == null) {
-        try { gl = canvas.getContext("experimental-webgl"); experimental = true; }
-        catch (x) { gl = null; }
+    try { gl = canvas.getContext("webgl"); console.log("DeepLearnJS: success webgl"); console.log(gl); }
+    catch (x) { gl = -1000; console.log("catch1: " + gl); }
+
+    if (gl == -1000) {
+        try { gl = canvas.getContext("experimental-webgl"); console.log("DeepLearnJS: webgl experimental = true"); }
+        catch (x) { gl = null; console.log("DeepLearnJS: failed gl"); console.log("catch2: " + gl); }
     }
   </script>
   <script type="text/javascript" src='./deeplearn.js'></script>
