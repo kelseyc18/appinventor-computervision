@@ -34,7 +34,7 @@ async function infer(imageData) {
       result[className] = topClassesToProbs[className].toFixed(5);
     }
     
-    console.log("DeepLearnJS: " + JSON.stringify(result));
+    console.log("DeepLearnJS: JSON stringify is " + JSON.stringify(result));
 
     DeepLearnJS.reportResult(JSON.stringify(result));
     
