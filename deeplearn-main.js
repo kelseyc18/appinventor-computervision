@@ -1,6 +1,6 @@
 const submitButton = document.getElementById('submitButton');
 const imageData = document.getElementById('imageData');
-const imageEl = document.getElementById('sampleImage');
+const img = document.getElementById('sampleImage');
 
 const math = new dl.NDArrayMathGPU();
 // squeezenet is loaded from https://unpkg.com/deeplearn-squeezenet
@@ -18,7 +18,6 @@ lol();
 
 async function infer(imageData) {
   console.log("DeepLearnJS: in infer");
-  var img = new Image(227, 227);
 
   img.onload = async function() {
     console.log("DeepLearnJS: onload");
@@ -46,7 +45,6 @@ async function infer(imageData) {
   }
 
   img.src = 'data:image/png;base64,' + imageData;
-  sampleImage.src = img.src;
   console.log("DeepLearnJS: end infer");
   return 'ok';
 }
