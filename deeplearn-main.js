@@ -23,6 +23,7 @@ async function infer(imageData) {
   img.onload = async function() {
     console.log("DeepLearnJS: onload");
     const image = dl.Array3D.fromPixels(img);
+    console.log("DeepLearnJS: fromPixels");
     const inferenceResult = await squeezeNet.predict(image);
     console.log("DeepLearnJS: squeezeNet predict");
     await inferenceResult.logits.data();
