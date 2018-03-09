@@ -17,9 +17,11 @@ console.log("DeepLearnJS: deeplearn-main.js start");
 lol();
 
 async function infer(imageData) {
+  console.log("DeepLearnJS: in infer");
   var img = new Image(227, 227);
 
   img.onload = async function() {
+    console.log("DeepLearnJS: onload");
     const image = dl.Array3D.fromPixels(img);
     const inferenceResult = await squeezeNet.predict(image);
     await inferenceResult.logits.data();
@@ -31,6 +33,8 @@ async function infer(imageData) {
     for (const className in topClassesToProbs) {
       result[className] = topClassesToProbs[className].toFixed(5);
     }
+    
+    console.log("DeepLearnJS: " + result);
 
     DeepLearnJS.reportResult(JSON.stringify(result));
   }
