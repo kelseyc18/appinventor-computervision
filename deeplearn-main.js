@@ -24,9 +24,12 @@ async function infer(imageData) {
     console.log("DeepLearnJS: onload");
     const image = dl.Array3D.fromPixels(img);
     const inferenceResult = await squeezeNet.predict(image);
+    console.log("DeepLearnJS: squeezeNet predict");
     await inferenceResult.logits.data();
 
     const topClassesToProbs = await squeezeNet.getTopKClasses(inferenceResult.logits, 10);
+    
+    console.log("DeepLearnJS: squeezeNet getTopK");
 
     var result = {};
 
