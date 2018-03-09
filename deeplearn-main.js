@@ -34,13 +34,16 @@ async function infer(imageData) {
       result[className] = topClassesToProbs[className].toFixed(5);
     }
     
-    console.log("DeepLearnJS: " + result);
+    console.log("DeepLearnJS: " + JSON.stringify(result));
 
     DeepLearnJS.reportResult(JSON.stringify(result));
+    
+    console.log("DeepLearnJS: reportResult called");
   }
 
   img.src = 'data:image/png;base64,' + imageData;
   sampleImage.src = img.src;
+  console.log("DeepLearnJS: end infer");
   return 'ok';
 }
 
