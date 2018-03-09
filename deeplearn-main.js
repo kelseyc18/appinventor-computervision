@@ -35,7 +35,7 @@ async function infer(imageData) {
     var result = [];
 
     for (const className in topClassesToProbs) {
-      result.push([topClassesToProbs[className].toFixed(5), className]);
+      result.push([className, topClassesToProbs[className].toFixed(5)]);
     }
     
     console.log("DeepLearnJS: JSON stringify is " + JSON.stringify(result));
