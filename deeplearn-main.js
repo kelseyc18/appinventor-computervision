@@ -18,7 +18,7 @@ lol();
 
 async function infer(imageData) {
   console.log("DeepLearnJS: in infer");
-  var img = new Image(300, 300);
+  var img = new Image(227, 227);
 
   img.onload = async function() {
     console.log("DeepLearnJS: onload");
