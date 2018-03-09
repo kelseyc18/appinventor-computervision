@@ -32,10 +32,10 @@ async function infer(imageData) {
     
     console.log("DeepLearnJS: squeezeNet getTopK");
 
-    var result = {};
+    var result = [];
 
     for (const className in topClassesToProbs) {
-      result[className] = topClassesToProbs[className].toFixed(5);
+      result.push([className, topClassesToProbs[className].toFixed(5)]);
     }
     
     console.log("DeepLearnJS: JSON stringify is " + JSON.stringify(result));
