@@ -20,8 +20,11 @@ video.setAttribute('playsinline', '');
 
 document.body.appendChild(video);
 
+var frontFacing = true;
+var videoConstraints = {video: { facingMode: frontFacing ? "user" : "environment" }, audio: false};
+
 // Setup webcam
-navigator.mediaDevices.getUserMedia({video: true, audio: false})
+navigator.mediaDevices.getUserMedia(videoConstraints)
 .then((stream) => {
   video.srcObject = stream;
   video.width = 227;
@@ -30,6 +33,20 @@ navigator.mediaDevices.getUserMedia({video: true, audio: false})
   console.log("error");
   console.log(err);
 });
+
+function updateCameraFacingMode() {
+  navigator.mediaDevices.getUserMedia({video: { facingMode: frontFacing ? "user" : "environment" }, audio: false})
+  .then(stream => (video.srcObject = stream))
+  .catch(e => log(e));
+}
+
+var stop = () => video.srcObject && video.srcObject.getTracks().forEach(t => t.stop());
+
+function toggleCameraFacingMode() {
+  frontFacing = !frontFacing;
+  stop();
+  updateCameraFacingMode();
+}
 
 async function infer() {
   console.log("DeepLearnJS: in infer");
