@@ -37,7 +37,7 @@ document.body.appendChild(video);
 document.body.appendChild(img);
 
 function start() {
-  if (!isPlaying) {
+  if (!isPlaying && isVideoMode) {
     navigator.mediaDevices.getUserMedia({video: { facingMode: frontFacing ? "user" : "environment" }, audio: false})
     .then(stream => (video.srcObject = stream))
     .catch(e => log(e));
@@ -47,7 +47,7 @@ function start() {
 }
 
 function stop() {
-  if (isPlaying && video.srcObject) {
+  if (isPlaying && isVideoMode && video.srcObject) {
     video.srcObject.getTracks().forEach(t => t.stop());
     isPlaying = false;
     video.style.display = 'none';
@@ -91,7 +91,7 @@ async function infer(imageData) {
 }
 
 function classifyVideoData() {
-  if (isPlaying) {
+  if (isPlaying && isVideoMode) {
     infer(video);    
   }
 }
@@ -104,7 +104,7 @@ function classifyImageData(imageData) {
 }
 
 function showImage() {
-  if (!isImageShowing) {
+  if (!isImageShowing && !isVideoMode) {
     img.style.display = 'block';
     isImageShowing = true;
   }
