@@ -29,9 +29,9 @@ var isVideoMode = false;
 var img = document.createElement('img');
 img.width = 227;
 img.height = 227;
-img.style.display = 'none';
+img.style.display = 'block';
 
-var isImageShowing = false;
+var isImageShowing = true;
 
 document.body.appendChild(video);
 document.body.appendChild(img);
@@ -121,6 +121,7 @@ function setInputMode(inputMode) {
   if (inputMode == 'image' && isVideoMode) {
     stop();
     isVideoMode = false;
+    showImage();
   } else if (inputMode == 'video' && !isVideoMode) {
     hideImage();
     isVideoMode = true;
