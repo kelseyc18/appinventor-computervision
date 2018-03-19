@@ -19,6 +19,7 @@ video.setAttribute('autoplay', '');
 video.setAttribute('playsinline', '');
 video.width = 500;
 video.height = 500;
+video.style.display = 'none';
 
 document.body.appendChild(video);
 
@@ -32,6 +33,7 @@ function start() {
     .then(stream => (video.srcObject = stream))
     .catch(e => log(e));
     isPlaying = true;
+    video.style.display = 'block';
   }
 }
 
@@ -39,6 +41,7 @@ function stop() {
   if (isPlaying && video.srcObject) {
     video.srcObject.getTracks().forEach(t => t.stop());
     isPlaying = false;
+    video.style.display = 'none';
   }
 }
 
