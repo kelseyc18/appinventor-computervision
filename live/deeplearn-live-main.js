@@ -27,8 +27,8 @@ var videoConstraints = {video: { facingMode: frontFacing ? "user" : "environment
 navigator.mediaDevices.getUserMedia(videoConstraints)
 .then((stream) => {
   video.srcObject = stream;
-  video.width = 227;
-  video.height = 227;
+  video.width = 500;
+  video.height = 500;
 }).catch((err) => {
   console.log("error");
   console.log(err);
@@ -53,8 +53,9 @@ async function infer() {
 
   console.log("DeepLearnJS: onload");
   const image = dl.Array3D.fromPixels(video);
+  const resized = dl.image.resizeBilinear(image, [227, 227]);
   console.log("DeepLearnJS: fromPixels");
-  const logits = squeezeNet.predict(image);
+  const logits = squeezeNet.predict(resized);
   console.log("DeepLearnJS: squeezeNet predict");
 
   const topClassesToProbs = await squeezeNet.getTopKClasses(logits, 10);
