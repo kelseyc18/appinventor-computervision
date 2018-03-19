@@ -1,6 +1,8 @@
+"use strict";
+
 const submitButton = document.getElementById('submitButton');
 const imageData = document.getElementById('imageData');
-const imageEl = document.getElementById('sampleImage');
+const sampleImage = document.getElementById('sampleImage');
 
 const math = new dl.NDArrayMathGPU();
 // squeezenet is loaded from https://unpkg.com/deeplearn-squeezenet

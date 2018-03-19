@@ -1,3 +1,5 @@
+"use strict";
+
 const submitButton = document.getElementById('submitButton');
 
 const math = new dl.NDArrayMathGPU();
@@ -26,10 +28,7 @@ var videoConstraints = {video: { facingMode: frontFacing ? "user" : "environment
 var isPlaying = false;
 var isVideoMode = false;
 
-var img = document.createElement('img');
-img.width = 227;
-img.height = 227;
-img.style.display = 'block';
+var img = new Image(227, 227);
 
 var isImageShowing = true;
 
