@@ -24,19 +24,21 @@ document.body.appendChild(video);
 
 var frontFacing = true;
 var videoConstraints = {video: { facingMode: frontFacing ? "user" : "environment" }, audio: false};
-var stopped = true;
+var isPlaying = false;
 
 function start() {
-  if (stopped) {
+  if (!isPlaying) {
     navigator.mediaDevices.getUserMedia({video: { facingMode: frontFacing ? "user" : "environment" }, audio: false})
     .then(stream => (video.srcObject = stream))
     .catch(e => log(e));
+    isPlaying = true;
   }
 }
 
 function stop() {
-  if (!stopped && video.srcObject) {
+  if (isPlaying && video.srcObject) {
     video.srcObject.getTracks().forEach(t => t.stop());
+    isPlaying = false;
   }
 }
 
