@@ -91,7 +91,7 @@ async function infer(imageData) {
 }
 
 function classifyVideoData() {
-  if isPlaying {
+  if (isPlaying) {
     infer(video);    
   }
 }
