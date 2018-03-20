@@ -27,7 +27,8 @@ var videoConstraints = {video: { facingMode: frontFacing ? "user" : "environment
 var isPlaying = false;
 var isVideoMode = false;
 
-var img = new Image(500, 500);
+var img = new Image();
+img.width = 500;
 
 var isImageShowing = true;
 img.style.display = 'block';
