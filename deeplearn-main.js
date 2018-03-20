@@ -36,6 +36,10 @@ img.style.display = 'block';
 document.body.appendChild(video);
 document.body.appendChild(img);
 
+video.addEventListener( "loadedmetadata", function (e) {
+    video.height = this.videoHeight * video.width / this.videoWidth;
+}, false );
+
 function start() {
   if (!isPlaying && isVideoMode) {
     navigator.mediaDevices.getUserMedia({video: { facingMode: frontFacing ? "user" : "environment" }, audio: false})
@@ -133,5 +137,6 @@ function setInputMode(inputMode) {
 
 function setInputWidth(width) {
   video.width = width;
+  video.height = video.videoHeight * width / video.videoWidth;
   img.width = width;
 }
