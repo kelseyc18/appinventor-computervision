@@ -97,7 +97,9 @@ function classifyVideoData() {
 
 function classifyImageData(imageData) {
   if (!isVideoMode) {
-    img.onload = infer(img);
+    img.onload = function() {
+      infer(img);
+    }
     img.src = 'data:image/png;base64,' + imageData;
   }
 }
