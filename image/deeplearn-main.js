@@ -53,6 +53,6 @@ async function infer(imageData) {
   return 'ok';
 }
 
-function onSubmit() {
+function classifyImageData() {
   infer(imageData.value);
 }
