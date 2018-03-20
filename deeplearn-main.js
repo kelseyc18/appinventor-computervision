@@ -130,3 +130,8 @@ function setInputMode(inputMode) {
     start();
   }
 }
+
+function setInputWidth(width) {
+  video.width = width;
+  img.width = width;
+}
