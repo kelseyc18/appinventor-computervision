@@ -31,6 +31,7 @@ var isVideoMode = false;
 var img = new Image(227, 227);
 
 var isImageShowing = true;
+img.style.display = 'block';
 
 document.body.appendChild(video);
 document.body.appendChild(img);
