@@ -20,7 +20,6 @@ var video = document.createElement('video');
 video.setAttribute('autoplay', '');
 video.setAttribute('playsinline', '');
 video.width = 500;
-video.height = 500;
 video.style.display = 'none';
 
 var frontFacing = true;
