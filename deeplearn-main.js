@@ -68,7 +68,7 @@ async function infer(imageData) {
   console.log("DeepLearnJS: in infer");
 
   console.log("DeepLearnJS: onload");
-  const image = dl.Array3D.fromPixels(imageData);
+  const image = dl.fromPixels(imageData);
   const resized = dl.image.resizeBilinear(image, [227, 227]);
   console.log("DeepLearnJS: fromPixels");
   const logits = squeezeNet.predict(resized);
