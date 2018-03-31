@@ -64,7 +64,6 @@ video.width = 500;
 video.style.display = 'none';
 
 var frontFacing = true;
-var videoConstraints = {video: {facingMode: frontFacing ? 'user' : 'environment'}, audio: false};
 var isPlaying = false;
 var isVideoMode = false;
 
