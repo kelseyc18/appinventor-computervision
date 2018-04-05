@@ -24,6 +24,7 @@ async function predict(imgElement) {
     return mobilenet.predict(batched);
   });
   const classes = await getTopKClasses(logits, TOPK_PREDICTIONS);
+  logits.dispose();
   var result = [];
   for (let i = 0; i < classes.length; i++) {
     result.push([classes[i].className, classes[i].probability.toFixed(5)]);
