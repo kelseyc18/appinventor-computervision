@@ -63,7 +63,6 @@ async function getTopKClasses(logits, topK) {
 var img = document.createElement("img");
 img.width = 500;
 
-var isImageShowing = true;
 img.style.display = "block";
 
 var video = document.createElement("video");
@@ -73,7 +72,6 @@ video.width = 500;
 video.style.display = "none";
 
 var frontFacing = false;
-var isPlaying = false;
 var isVideoMode = false;
 
 document.body.appendChild(img);
@@ -84,27 +82,29 @@ video.addEventListener("loadedmetadata", function() {
 }, false);
 
 function startVideo() {
-  if (!isPlaying && isVideoMode) {
+  if (isVideoMode) {
     navigator.mediaDevices.getUserMedia({video: {facingMode: frontFacing ? "user" : "environment"}, audio: false})
     .then(stream => (video.srcObject = stream))
     .catch(e => log(e));
-    isPlaying = true;
     video.style.display = "block";
   }
 }
 
 function stopVideo() {
-  if (isPlaying && isVideoMode && video.srcObject) {
+  if (isVideoMode && video.srcObject) {
     video.srcObject.getTracks().forEach(t => t.stop());
-    isPlaying = false;
     video.style.display = "none";
   }
 }
 
 function toggleCameraFacingMode() {
-  frontFacing = !frontFacing;
-  stopVideo();
-  startVideo();
+  if (isVideoMode) {
+    frontFacing = !frontFacing;
+    stopVideo();
+    startVideo();
+  } else {
+    Look.error("ToggleCameraFacingMode: cannot toggle camera facing mode when in image mode");
+  }
 }
 
 function classifyImageData(imageData) {
@@ -113,26 +113,16 @@ function classifyImageData(imageData) {
       predict(img);
     }
     img.src = "data:image/png;base64," + imageData;
+  } else {
+    Look.error("ClassifyImageData: cannot classify image data when in video mode");
   }
 }
 
 function classifyVideoData() {
-  if (isPlaying && isVideoMode) {
+  if (isVideoMode) {
     predict(video);
-  }
-}
-
-function showImage() {
-  if (!isImageShowing && !isVideoMode) {
-    img.style.display = "block";
-    isImageShowing = true;
-  }
-}
-
-function hideImage() {
-  if (isImageShowing) {
-    img.style.display = "none";
-    isImageShowing = false;
+  } else {
+    Look.error("ClassifyVideoData: cannot classify video data when in image mode");
   }
 }
 
@@ -140,9 +130,9 @@ function setInputMode(inputMode) {
   if (inputMode === "image" && isVideoMode) {
     stopVideo();
     isVideoMode = false;
-    showImage();
+    img.style.display = "block";
   } else if (inputMode === "video" && !isVideoMode) {
-    hideImage();
+    img.style.display = "none";
     isVideoMode = true;
     startVideo();
   }
