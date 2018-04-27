@@ -14,7 +14,12 @@ const mobilenetDemo = async () => {
   console.log("2");
   const zeros = tf.zeros([1, IMAGE_SIZE, IMAGE_SIZE, 3]);
   console.log("3");
-  mobilenet.predict(zeros).dispose();
+  try {
+    mobilenet.predict(zeros).dispose();
+  } catch(error) {
+    console.log("Look: " + error);
+    Look.error("Classification is not supported on this device");
+  }
   console.log("4");
   zeros.dispose();
   console.log("Look: Mobilenet ready");
@@ -22,31 +27,29 @@ const mobilenetDemo = async () => {
 };
 
 async function predict(pixels) {
-  try {
-    console.log("5");
-    const logits = tf.tidy(() => {
-      console.log("6");
-      const img = tf.image.resizeBilinear(tf.fromPixels(pixels).toFloat(), [IMAGE_SIZE, IMAGE_SIZE]);
-      console.log("7");
-      const offset = tf.scalar(127.5);
-      const normalized = img.sub(offset).div(offset);
-      console.log("8");
-      const batched = normalized.reshape([1, IMAGE_SIZE, IMAGE_SIZE, 3]);
-      console.log("9");
-      return mobilenet.predict(batched);
-    });
-    const classes = await getTopKClasses(logits, TOPK_PREDICTIONS);
-    logits.dispose();
-    var result = [];
-    for (let i = 0; i < classes.length; i++) {
-      result.push([classes[i].className, classes[i].probability.toFixed(5)]);
+  const logits = tf.tidy(() => {
+    const img = tf.image.resizeBilinear(tf.fromPixels(pixels).toFloat(), [IMAGE_SIZE, IMAGE_SIZE]);
+    const offset = tf.scalar(127.5);
+    const normalized = img.sub(offset).div(offset);
+    const batched = normalized.reshape([1, IMAGE_SIZE, IMAGE_SIZE, 3]);
+    var result;
+    try {
+      result = mobilenet.predict(batched);
+    } catch(error) {
+      console.log("Look: " + error);
+      Look.error("Classification is not supported on this device");
+    } finally {
+      return result;        
     }
-    console.log("Look: prediction is " + JSON.stringify(result));
-    Look.reportResult(JSON.stringify(result));  
-  } catch(error) {
-    console.log("Look: " + error);
-    Look.error("Classification is not supported on this device");
+  });
+  const classes = await getTopKClasses(logits, TOPK_PREDICTIONS);
+  logits.dispose();
+  var result = [];
+  for (let i = 0; i < classes.length; i++) {
+    result.push([classes[i].className, classes[i].probability.toFixed(5)]);
   }
+  console.log("Look: prediction is " + JSON.stringify(result));
+  Look.reportResult(JSON.stringify(result));
 }
 
 async function getTopKClasses(logits, topK) {
