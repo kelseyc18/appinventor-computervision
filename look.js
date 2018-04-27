@@ -18,21 +18,26 @@ const mobilenetDemo = async () => {
 };
 
 async function predict(pixels) {
-  const logits = tf.tidy(() => {
-    const img = tf.image.resizeBilinear(tf.fromPixels(pixels).toFloat(), [IMAGE_SIZE, IMAGE_SIZE]);
-    const offset = tf.scalar(127.5);
-    const normalized = img.sub(offset).div(offset);
-    const batched = normalized.reshape([1, IMAGE_SIZE, IMAGE_SIZE, 3]);
-    return mobilenet.predict(batched);
-  });
-  const classes = await getTopKClasses(logits, TOPK_PREDICTIONS);
-  logits.dispose();
-  var result = [];
-  for (let i = 0; i < classes.length; i++) {
-    result.push([classes[i].className, classes[i].probability.toFixed(5)]);
+  try {
+    const logits = tf.tidy(() => {
+      const img = tf.image.resizeBilinear(tf.fromPixels(pixels).toFloat(), [IMAGE_SIZE, IMAGE_SIZE]);
+      const offset = tf.scalar(127.5);
+      const normalized = img.sub(offset).div(offset);
+      const batched = normalized.reshape([1, IMAGE_SIZE, IMAGE_SIZE, 3]);
+      return mobilenet.predict(batched);
+    });
+    const classes = await getTopKClasses(logits, TOPK_PREDICTIONS);
+    logits.dispose();
+    var result = [];
+    for (let i = 0; i < classes.length; i++) {
+      result.push([classes[i].className, classes[i].probability.toFixed(5)]);
+    }
+    console.log("Look: prediction is " + JSON.stringify(result));
+    Look.reportResult(JSON.stringify(result));  
+  } catch(error) {
+    console.log("Look: " + error);
+    Look.error("Classification is not supported on this device");
   }
-  console.log("Look: prediction is " + JSON.stringify(result));
-  Look.reportResult(JSON.stringify(result));
 }
 
 async function getTopKClasses(logits, topK) {
@@ -110,12 +115,7 @@ function toggleCameraFacingMode() {
 function classifyImageData(imageData) {
   if (!isVideoMode) {
     img.onload = function() {
-      try {
-        predict(img);
-      } catch(error) {
-        console.log("Look: " + error);
-        Look.error("ClassifyImageData: not supported on this device");
-      }
+      predict(img);
     }
     img.src = "data:image/png;base64," + imageData;
   } else {
@@ -125,12 +125,7 @@ function classifyImageData(imageData) {
 
 function classifyVideoData() {
   if (isVideoMode) {
-    try {
-      predict(video);
-    } catch(error) {
-      console.log("Look: " + error);
-      Look.error("ClassifyVideoData: not supported on this device");
-    }
+    predict(video);
   } else {
     Look.error("ClassifyVideoData: cannot classify video data when in image mode");
   }
