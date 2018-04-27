@@ -9,21 +9,17 @@ const TOPK_PREDICTIONS = 10;
 
 let mobilenet;
 const mobilenetDemo = async () => {
-  console.log("1");
   mobilenet = await tf.loadModel(MOBILENET_MODEL_PATH);
-  console.log("2");
   const zeros = tf.zeros([1, IMAGE_SIZE, IMAGE_SIZE, 3]);
-  console.log("3");
   try {
     mobilenet.predict(zeros).dispose();
+    zeros.dispose();
+    console.log("Look: Mobilenet ready");
+    Look.ready();
   } catch(error) {
     console.log("Look: " + error);
     Look.error("Classification is not supported on this device");
   }
-  console.log("4");
-  zeros.dispose();
-  console.log("Look: Mobilenet ready");
-  Look.ready();
 };
 
 async function predict(pixels) {
