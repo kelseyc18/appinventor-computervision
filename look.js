@@ -23,12 +23,16 @@ const mobilenetDemo = async () => {
 
 async function predict(pixels) {
   try {
+    console.log("5");
     const logits = tf.tidy(() => {
+      console.log("6");
       const img = tf.image.resizeBilinear(tf.fromPixels(pixels).toFloat(), [IMAGE_SIZE, IMAGE_SIZE]);
+      console.log("7");
       const offset = tf.scalar(127.5);
       const normalized = img.sub(offset).div(offset);
+      console.log("8");
       const batched = normalized.reshape([1, IMAGE_SIZE, IMAGE_SIZE, 3]);
-      console.log("5");
+      console.log("9");
       return mobilenet.predict(batched);
     });
     const classes = await getTopKClasses(logits, TOPK_PREDICTIONS);
