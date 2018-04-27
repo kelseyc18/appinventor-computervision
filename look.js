@@ -7,6 +7,13 @@ const MOBILENET_MODEL_PATH = "https://storage.googleapis.com/tfjs-models/tfjs/mo
 const IMAGE_SIZE = 224;
 const TOPK_PREDICTIONS = 10;
 
+// make sure error codes are consistent with those defined in Look.java
+const ERROR_CLASSIFICATION_NOT_SUPPORTED = -1;
+const ERROR_CLASSIFICATION_FAILED = -2;
+const ERROR_CANNOT_TOGGLE_CAMERA_IN_IMAGE_MODE = -3;
+const ERROR_CANNOT_CLASSIFY_IMAGE_WHEN_IN_VIDEO_MODE = -4;
+const ERROR_CANNOT_CLASSIFY_VIDEO_WHEN_IN_IMAGE_MODE = -5;
+
 let mobilenet;
 const mobilenetDemo = async () => {
   mobilenet = await tf.loadModel(MOBILENET_MODEL_PATH);
@@ -18,7 +25,7 @@ const mobilenetDemo = async () => {
     Look.ready();
   } catch(error) {
     console.log("Look: " + error);
-    Look.error("Classification is not supported on this device");
+    Look.error(ERROR_CLASSIFICATION_NOT_SUPPORTED);
   }
 };
 
@@ -33,7 +40,7 @@ async function predict(pixels) {
       result = mobilenet.predict(batched);
     } catch(error) {
       console.log("Look: " + error);
-      Look.error("Classification is not supported on this device");
+      Look.error(ERROR_CLASSIFICATION_NOT_SUPPORTED);
     } finally {
       return result;        
     }
@@ -116,7 +123,7 @@ function toggleCameraFacingMode() {
     stopVideo();
     startVideo();
   } else {
-    Look.error("ToggleCameraFacingMode: cannot toggle camera facing mode when in image mode");
+    Look.error(ERROR_CANNOT_TOGGLE_CAMERA_IN_IMAGE_MODE);
   }
 }
 
@@ -127,7 +134,7 @@ function classifyImageData(imageData) {
     }
     img.src = "data:image/png;base64," + imageData;
   } else {
-    Look.error("ClassifyImageData: cannot classify image data when in video mode");
+    Look.error(ERROR_CANNOT_CLASSIFY_IMAGE_WHEN_IN_VIDEO_MODE);
   }
 }
 
@@ -135,7 +142,7 @@ function classifyVideoData() {
   if (isVideoMode) {
     predict(video);
   } else {
-    Look.error("ClassifyVideoData: cannot classify video data when in image mode");
+    Look.error(ERROR_CANNOT_CLASSIFY_VIDEO_WHEN_IN_IMAGE_MODE);
   }
 }
 
