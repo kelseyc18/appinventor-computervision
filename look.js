@@ -9,9 +9,13 @@ const TOPK_PREDICTIONS = 10;
 
 let mobilenet;
 const mobilenetDemo = async () => {
+  console.log("1");
   mobilenet = await tf.loadModel(MOBILENET_MODEL_PATH);
+  console.log("2");
   const zeros = tf.zeros([1, IMAGE_SIZE, IMAGE_SIZE, 3]);
+  console.log("3");
   mobilenet.predict(zeros).dispose();
+  console.log("4");
   zeros.dispose();
   console.log("Look: Mobilenet ready");
   Look.ready();
@@ -24,6 +28,7 @@ async function predict(pixels) {
       const offset = tf.scalar(127.5);
       const normalized = img.sub(offset).div(offset);
       const batched = normalized.reshape([1, IMAGE_SIZE, IMAGE_SIZE, 3]);
+      console.log("5");
       return mobilenet.predict(batched);
     });
     const classes = await getTopKClasses(logits, TOPK_PREDICTIONS);
@@ -149,4 +154,4 @@ function setInputWidth(width) {
   video.height = video.videoHeight * width / video.videoWidth;
 }
 
-// mobilenetDemo();
+mobilenetDemo();
