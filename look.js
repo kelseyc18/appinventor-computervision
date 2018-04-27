@@ -110,7 +110,12 @@ function toggleCameraFacingMode() {
 function classifyImageData(imageData) {
   if (!isVideoMode) {
     img.onload = function() {
-      predict(img);
+      try {
+        predict(img);
+      } catch(error) {
+        console.log("Look: " + error);
+        Look.error("ClassifyImageData: not supported on this device");
+      }
     }
     img.src = "data:image/png;base64," + imageData;
   } else {
@@ -120,7 +125,12 @@ function classifyImageData(imageData) {
 
 function classifyVideoData() {
   if (isVideoMode) {
-    predict(video);
+    try {
+      predict(video);
+    } catch(error) {
+      console.log("Look: " + error);
+      Look.error("ClassifyVideoData: not supported on this device");
+    }
   } else {
     Look.error("ClassifyVideoData: cannot classify video data when in image mode");
   }
