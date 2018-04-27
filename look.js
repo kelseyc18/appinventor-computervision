@@ -149,4 +149,4 @@ function setInputWidth(width) {
   video.height = video.videoHeight * width / video.videoWidth;
 }
 
-mobilenetDemo();
+// mobilenetDemo();
