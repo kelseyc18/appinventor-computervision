@@ -23,7 +23,7 @@ const mobilenetDemo = async () => {
     zeros.dispose();
     console.log("Look: Mobilenet ready");
     Look.ready();
-  } catch(error) {
+  } catch (error) {
     console.log("Look: " + error);
     Look.error(ERROR_CLASSIFICATION_NOT_SUPPORTED);
   }
@@ -46,7 +46,7 @@ async function predict(pixels) {
     }
     console.log("Look: prediction is " + JSON.stringify(result));
     Look.reportResult(JSON.stringify(result));
-  } catch(error) {
+  } catch (error) {
     console.log("Look: " + error);
     Look.error(ERROR_CLASSIFICATION_NOT_SUPPORTED);
   }
