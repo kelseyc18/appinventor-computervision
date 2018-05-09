@@ -2,7 +2,7 @@
 
 console.log("Look: Using TensorFlow.js version " + tf.version.tfjs);
 
-const MOBILENET_MODEL_PATH = "https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_1.0_224/model.json";
+const MOBILENET_MODEL_PATH = "https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.50_224/model.json";
 
 const IMAGE_SIZE = 224;
 const TOPK_PREDICTIONS = 10;
